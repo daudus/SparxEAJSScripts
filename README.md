@@ -1,3 +1,5 @@
+[MD Editing Syntax](https://guides.github.com/features/mastering-markdown/)
+
 # SparxEAJSScripts
 
 - Development tool: [Microsoft Visual Studio Code](https://code.visualstudio.com/download)
