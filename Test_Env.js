@@ -4,8 +4,6 @@
 //!INC *.*
 var ActiveXObject, GetObject;
 eval(new ActiveXObject("Scripting.FileSystemObject").OpenTextFile("ea_utils.js", 1).ReadAll());
-var DEBUG = true;
-
 
 //-----------------------------------------------------------------------------
 function test(eaRepository) {

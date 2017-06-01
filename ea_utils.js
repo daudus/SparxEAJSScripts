@@ -1,32 +1,43 @@
 /*
  * Script Name: ea_utils
- * Author: luzny
+ * Author: Jiri Luzny
  * Purpose: library for other scripts
- * Date: 10.10.2014
- * version 1
+ * Date: 1.6.2017
+ * version 2
  */
 
-
-/*jslint node: true */
 "use strict";
 
-//-- cscript import ------------------------------------------------------------------
-//var ActiveXObject, GetObject;
-//eval(new ActiveXObject("Scripting.FileSystemObject").OpenTextFile("ea_utils.js", 1).ReadAll());
-//-- or node import ---------------------------------------------------------------------------
-//var info = require('./utils').info;
-//info("test");
-// ---------------------------------
 var DEBUG = true;
+var ENV_SPARX = false;
+
+function _main()
+{
+    info("ea_utils initialization started");
+	if (typeof WScript === 'object') {
+		ENV_SPARX = false;
+		info("Running Environment: Standalone, CScript");
+  } else {
+		ENV_SPARX = true;
+		info("Running Environment: Sparx EA embeded");
+  }
+	debug("ENV_SPARX=" + ENV_SPARX);
+    info("ea_utils initiated");
+}
+
+function getActualISODate() {
+  var date = new Date();
+  return date
+}
 
 function log(msg) {
+  msg = "[" + getActualISODate() + "] " + msg;
   if (typeof WScript === 'object') {
     return WScript.Echo(msg);
   } else {
     return Session.Output(msg);
   }
 }
-//---------------------------------
 
 function debug(msg) {
   if (DEBUG) {
@@ -853,3 +864,4 @@ function deleteDiagram(eaRepository, diagGUID) {
     warn("Cannot found diagram with ID " + diagGUID);
   }
 }
+_main();
