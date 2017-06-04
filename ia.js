@@ -14,18 +14,11 @@ GLOBAL VARIABLES
 
 //if special testing routine will be executed. For production purpose should be set to false
 var TEST = true; 
+var context = null;
 
-//MAXIMUM_DEPTH: limit for Breadth-first traversal
-//DIAGRAM_PREFIX: diagram will be created with this name: DIAGRAM_PREFIX+<name of selected package>
-//SELECTED_PACKAGE: selected package in the repository
-var configuration ={MAXIMUM_DEPTH:10,DIAGRAM_PREFIX:"iagen_",REPOSITORY:"",SELECTED_PACKAGE:""};
-
-//object definition for wrapper of Sparx EA Element
-var element = {eaElement:"",stereoType:"",depth:"", name: function() {return this.eaElement.Name + " [" + this.stereoType+"]";}};
 
 //array for impacted elements. Should be filled by array.push(...) method
 var impactedElements = new Array();
-
 
 //!INC .......
 //TODO: NEEDS TO BE COMMENTED MANUALLY
@@ -33,6 +26,7 @@ var impactedElements = new Array();
 ///*
 var ActiveXObject, GetObject;
 eval(new ActiveXObject("Scripting.FileSystemObject").OpenTextFile("ea_utils.js", 1).ReadAll());
+eval(new ActiveXObject("Scripting.FileSystemObject").OpenTextFile("ia_globals.js", 1).ReadAll());
 //*/
 
 //EMBEDED SPARX EA ENVIRONMENT
@@ -44,13 +38,11 @@ eval(new ActiveXObject("Scripting.FileSystemObject").OpenTextFile("ea_utils.js",
 function init() {
     info("ia initialization started");
     //TODO: if not selected package then display ERROR and finish
-    var ea_repo = GetObject("", "EA.App").repository;
-    var ea_pckg =  ea_repo.GetTreeSelectedPackage();
+    context = new Context(new Config(), GetObject("", "EA.App").repository);
+    var ea_pckg =  context.eaRepository.GetTreeSelectedPackage();
     if (TEST) {
         test(ea_pckg);    
     }
-    configuration["SELECTED_PACKAGE"]=ea_pckg;
-    configuration["REPOSITORY"]=ea_repo;
     info("ia initialization finished");
 }
 

@@ -1,9 +1,15 @@
 /*jslint node: true */
 "use strict";
+DEBUG = true;
 
 //!INC *.*
 var ActiveXObject, GetObject;
-eval(new ActiveXObject("Scripting.FileSystemObject").OpenTextFile("ea_utils.js", 1).ReadAll());
+var fso = new ActiveXObject("Scripting.FileSystemObject");
+ eval(fso.OpenTextFile(fso.getFolder(".")  + "\\ea_utils.js", 1).ReadAll());
+
+
+//global vars
+DEBUG = false;
 
 //-----------------------------------------------------------------------------
 function test(eaRepository) {
