@@ -92,5 +92,71 @@ function findAllElements(root, deep) {
   return foundElements;
 }
 
+/** 
+ * Dump function. Textual representation of objects and array. 
+ * TODO: Issue with nested objects. Are not displayed ....
+ */
+String.prototype.repeat = function(num) {
+    if (num < 0) {
+        return '';
+    } else {
+        return new Array(num + 1).join(this);
+    }
+};
+
+function is_defined(x) {
+    return typeof x !== 'undefined';
+}
+
+function is_object(x) {
+    return Object.prototype.toString.call(x) === "[object Object]";
+}
+
+function is_array(x) {
+    return Object.prototype.toString.call(x) === "[object Array]";
+}
+
+//Main
+function xlog(v, label) {
+    var tab = 0;
+
+    var rt = function() {
+        return '    '.repeat(tab);
+    };
+
+    // Log Fn
+    var lg = function(x) {
+        // Limit
+        if (tab > 10) return '[...]';
+        var r = '';
+        if (!is_defined(x)) {
+            r = '[VAR: UNDEFINED]';
+        } else if (x === '') {
+            r = '[VAR: EMPTY STRING]';
+        } else if (is_array(x)) {
+            r = '[\n';
+            tab++;
+            for (var k in x) {
+                r += rt() + k + ' : ' + lg(x[k]) + ',\n';
+            }
+            tab--;
+            r += rt() + ']';
+        } else if (is_object(x)) {
+            r = '{\n';
+            tab++;
+            for (var k in x) {
+                r += rt() + k + ' : ' + lg(x[k]) + ',\n';
+            }
+            tab--;
+            r += rt() + '}';
+        } else {
+            r = x;
+        }
+        return r;
+    };
+
+    // Space
+    return label+':\n' + lg(v);
+};
 
 _main();

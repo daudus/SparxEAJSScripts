@@ -1,7 +1,8 @@
 /*
  * Script Name: ia
  * Author: David Skarka, Jiri Luzny, ©HuMaInn
- * Purpose: library for other scripts
+ * Purpose: Impact analysis in Archimate models
+ * Usage: Select element in Technology layer, invoke sript and obtain all impacted elements in Application layer in newly creeated diagram
  * Date: 1.6.2017
  * version 2
  */
@@ -20,6 +21,7 @@ eval(new ActiveXObject("Scripting.FileSystemObject").OpenTextFile("ia_globals.js
 //EMBEDED SPARX EA ENVIRONMENT
 /*
 !INC HuMaInn.ea_utils
+!INC HuMaInn.ia_globals
 */
 
 /*
@@ -27,7 +29,7 @@ GLOBAL VARIABLES
 */
 
 //if special testing routine will be executed. For production purpose should be set to false
-var TEST = true; 
+var TEST = false; 
 var context = null;
 DEBUG = true;
 
@@ -39,60 +41,74 @@ var impactedElements = new Array();
 //INITIALIZING
 function init() {
     info("ia initialization started");
-    //TODO: if not selected package then display ERROR and finish
-    context = new Context(new Config(), GetObject("", "EA.App").repository);
-    var ea_pckg =  context.eaRepository.GetTreeSelectedPackage();
-    if (TEST) {
-        test(ea_pckg);    
+    //has to be selected Archimate_* element and from technology layer
+    var context = null;
+    var eaRepo = GetObject("", "EA.App").repository
+    var eaElement = null;
+    var eaPackage = null;
+    var treeSelectedType = eaRepo.GetTreeSelectedItemType();
+    debug("treeSelectedType: " + treeSelectedType + " (4 for EA.otElement)");
+
+    switch ( treeSelectedType )
+    {
+        case 4 /*otElement*/ :
+        {
+            eaElement = eaRepo.GetTreeSelectedObject();
+            eaPackage = eaRepo.GetPackageByID(eaElement.PackageID);     
+            info("selected element: " + eaElement.Name);
+            info("  in package: " + eaPackage.Name);
+            break;
+        }
+    default :
+        {
+            // no element is selected
+            error("No element is selected. Script is finishing.");
+            break;
+        }
     }
+    if (eaElement != null) 
+        {
+            context = new Context(new Config(), eaRepo,eaPackage,eaElement);
+
+        }
+    debug(xlog(context,"CONTEXT"));    
     info("ia initialization finished");
+    return context;
 }
 
-//TESTING functions-----------------------------------------------------------------------------
-function test(ea_pckg) {
-    var start = new Date();
-    var result;
-    info("testing started");
-    info("Invoking script on selected package: " + ea_pckg.Name);
-    result = testPackage(ea_pckg);
-    info(result + " in " + ((new Date() - start) / 1000) + " seconds!");
-    info("testing finished");
-}
-
-function testPackage(eaPackage) {
-  var elements = findAllElements(eaPackage, true);
-  if (elements) {
-    var i = 0;
-    while (i < elements.length) {
-      var element = elements[i];
-      info("Testing " + element.Name);
-      i += 1;
-    }
-
-  }
-  return "SUCCESS";
-}
-
-function prepareConfiguration(configuration) {
-    info("prepareConfiguration started")
-    info("prepareConfiguration finished")
-    return configuration;
-}
-
-function getImpactedElements(configuration, impactedElements) {
+function getImpactedElements(context, impactedElements) {
     info("getImpactedElements started")
+    var eaElement = null;
+    //dummy implementation
+    debug("number of elements: " + context.eaPackage.elements.Count)
+    for (index = 0; index < context.eaPackage.elements.Count; ++index) {
+        eaElement = context.eaPackage.elements.GetAt(index);
+        var element = new EaElement(eaElement,eaElement.Name,eaElement.Stereotype);
+        impactedElements.push(element);
+        debug("ADDED ELEMENT: " +element.fullName());
+    };
+    //end dummy implementation
+    info(impactedElements.length + " impacted elements were added");
     info("getImpactedElements finished")
     return impactedElements;
 }
 
-function createDiagram(configuration, impactedElements) {
+function createDiagram(context, impactedElements) {
     info("createDiagram started")
+    //dummy implementation
+    var eaElement = null;
+    debug("number of elements: " + impactedElements.length)
+    for (index = 0; index < impactedElements.length; ++index) {
+        eaElement = impactedElements[index].eaElement;
+        debug("DRAWN ELEMENT: " +eaElement.Name);
+    };
+    //end dummy implementation
     info("createDiagram finished")
     //success
     return 0;
 }
 
-function finish(configuration, impactedElements) {
+function finish(context, impactedElements) {
     info("finish started")
     //push something to clean here
     info("finish finished")
@@ -101,10 +117,14 @@ function finish(configuration, impactedElements) {
 }
 
 //-- START -----------------------------------------------------------------------
-init();
-configuration = prepareConfiguration();
-impactedElements = getImpactedElements(configuration);
-createDiagram(configuration, impactedElements);
+context = init();
+if (context != null) {
+    impactedElements = getImpactedElements(context, impactedElements);
+    var eaDiagram = createDiagram(context, impactedElements);
+    //eaDiagram.show();
+} else {
+    error("something was/is wrong. Script is finishing.")
+}
 finish();
 //-- END ----------------------------------------------------------------------
 
