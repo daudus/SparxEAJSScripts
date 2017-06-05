@@ -8,18 +8,6 @@
 
 "use strict";
 
-/*
-GLOBAL VARIABLES
-*/
-
-//if special testing routine will be executed. For production purpose should be set to false
-var TEST = true; 
-var context = null;
-
-
-//array for impacted elements. Should be filled by array.push(...) method
-var impactedElements = new Array();
-
 //!INC .......
 //TODO: NEEDS TO BE COMMENTED MANUALLY
 //STANDALONE ENVIRONMENT
@@ -33,6 +21,20 @@ eval(new ActiveXObject("Scripting.FileSystemObject").OpenTextFile("ia_globals.js
 /*
 !INC HuMaInn.ea_utils
 */
+
+/*
+GLOBAL VARIABLES
+*/
+
+//if special testing routine will be executed. For production purpose should be set to false
+var TEST = true; 
+var context = null;
+DEBUG = true;
+
+//array for impacted elements. Should be filled by array.push(...) method
+var impactedElements = new Array();
+
+
 
 //INITIALIZING
 function init() {
