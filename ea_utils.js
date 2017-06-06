@@ -11,7 +11,7 @@
 var DEBUG = false;
 var ENV_SPARX = false;
 
-function _main()
+function _ea_utils()
 {
   info("ea_utils initialization started");
 	if (typeof WScript === 'object') {
@@ -159,4 +159,4 @@ function xlog(v, label) {
     return label+':\n' + lg(v);
 };
 
-_main();
+_ea_utils();
