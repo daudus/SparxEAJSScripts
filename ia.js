@@ -27,16 +27,10 @@ eval(new ActiveXObject("Scripting.FileSystemObject").OpenTextFile("ia_globals.js
 /*
 GLOBAL VARIABLES
 */
-
-//if special testing routine will be executed. For production purpose should be set to false
-var TEST = false; 
 var context = null;
 DEBUG = true;
-
 //array for impacted elements. Should be filled by array.push(...) method
 var impactedElements = new Array();
-
-
 
 //INITIALIZING
 function init() {
@@ -119,6 +113,9 @@ function finish(context, impactedElements) {
 //-- START -----------------------------------------------------------------------
 context = init();
 if (context != null) {
+    //debug("findAllElements test start");
+    //var els = findAllElements(context.eaPackage,true);
+    //debug("findAllElements test end");
     impactedElements = getImpactedElements(context, impactedElements);
     var eaDiagram = createDiagram(context, impactedElements);
     //eaDiagram.show();
