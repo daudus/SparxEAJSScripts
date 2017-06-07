@@ -11,17 +11,16 @@
 var DEBUG = false;
 var ENV_SPARX = false;
 
-function _main()
-{
+function _main() {
   info("ea_utils initialization started");
-	if (typeof WScript === 'object') {
-		ENV_SPARX = false;
-		info("Running Environment: Standalone, CScript");
+  if (typeof WScript === 'object') {
+    ENV_SPARX = false;
+    info("Running Environment: Standalone, CScript");
   } else {
-		ENV_SPARX = true;
-		info("Running Environment: Sparx EA embedded");
+    ENV_SPARX = true;
+    info("Running Environment: Sparx EA embedded");
   }
-	debug("ENV_SPARX=" + ENV_SPARX);
+  debug("ENV_SPARX=" + ENV_SPARX);
   info("ea_utils initiated");
 }
 
@@ -69,11 +68,9 @@ function findAllElements(root, deep) {
     while (i < elements.Count) {
       currentElement = elements.GetAt(i);
       foundElement = currentElement;
-      if (!currentElement.Locked()) {
-        foundElements.push(foundElement);
-        debug("Added element: '" + foundElement.Name + "'");
-        foundElements = foundElements.concat(findAllElements(currentElement, deep));
-      }
+      foundElements.push(foundElement);
+      debug("Added element: '" + foundElement.Name + "'");
+      foundElements = foundElements.concat(findAllElements(currentElement, deep));
       i += 1;
     }
     if (deep) {
@@ -96,67 +93,98 @@ function findAllElements(root, deep) {
  * Dump function. Textual representation of objects and array. 
  * TODO: Issue with nested objects. Are not displayed ....
  */
-String.prototype.repeat = function(num) {
-    if (num < 0) {
-        return '';
-    } else {
-        return new Array(num + 1).join(this);
-    }
+String.prototype.repeat = function (num) {
+  if (num < 0) {
+    return '';
+  } else {
+    return new Array(num + 1).join(this);
+  }
 };
 
 function is_defined(x) {
-    return typeof x !== 'undefined';
+  return typeof x !== 'undefined';
 }
 
 function is_object(x) {
-    return Object.prototype.toString.call(x) === "[object Object]";
+  return Object.prototype.toString.call(x) === "[object Object]";
 }
 
 function is_array(x) {
-    return Object.prototype.toString.call(x) === "[object Array]";
+  return Object.prototype.toString.call(x) === "[object Array]";
 }
 
 //Main
 function xlog(v, label) {
-    var tab = 0;
+  var tab = 0;
 
-    var rt = function() {
-        return '    '.repeat(tab);
-    };
+  var rt = function () {
+    return '    '.repeat(tab);
+  };
 
-    // Log Fn
-    var lg = function(x) {
-        // Limit
-        if (tab > 10) return '[...]';
-        var r = '';
-        if (!is_defined(x)) {
-            r = '[VAR: UNDEFINED]';
-        } else if (x === '') {
-            r = '[VAR: EMPTY STRING]';
-        } else if (is_array(x)) {
-            r = '[\n';
-            tab++;
-            for (var k in x) {
-                r += rt() + k + ' : ' + lg(x[k]) + ',\n';
-            }
-            tab--;
-            r += rt() + ']';
-        } else if (is_object(x)) {
-            r = '{\n';
-            tab++;
-            for (var k in x) {
-                r += rt() + k + ' : ' + lg(x[k]) + ',\n';
-            }
-            tab--;
-            r += rt() + '}';
-        } else {
-            r = x;
-        }
-        return r;
-    };
+  // Log Fn
+  var lg = function (x) {
+    // Limit
+    if (tab > 10) return '[...]';
+    var r = '';
+    if (!is_defined(x)) {
+      r = '[VAR: UNDEFINED]';
+    } else if (x === '') {
+      r = '[VAR: EMPTY STRING]';
+    } else if (is_array(x)) {
+      r = '[\n';
+      tab++;
+      for (var k in x) {
+        r += rt() + k + ' : ' + lg(x[k]) + ',\n';
+      }
+      tab--;
+      r += rt() + ']';
+    } else if (is_object(x)) {
+      r = '{\n';
+      tab++;
+      for (var k in x) {
+        r += rt() + k + ' : ' + lg(x[k]) + ',\n';
+      }
+      tab--;
+      r += rt() + '}';
+    } else {
+      r = x;
+    }
+    return r;
+  };
 
-    // Space
-    return label+':\n' + lg(v);
+  // Space
+  return label + ':\n' + lg(v);
 };
+
+
+function findAllRelatedElements(eaRepository, element, maxDepth, currentDepth) {
+  var connectors, currentConnector, currentFoundElements, foundElement, foundElements, i;
+  debug("Finding related elements for: '" + element.Name + "'. Current depth =" + currentDepth);
+  if (currentDepth >= maxDepth) {
+    return;
+  } else {
+    currentDepth++;
+  }
+  connectors = element.Connectors;
+  foundElements = [];
+  if (connectors) {
+    debug("Number of connectors=" + connectors.Count)
+    i = 0;
+    while (i < connectors.Count) {
+      currentConnector = connectors.GetAt(i);
+      foundElement = eaRepository.GetElementByID(currentConnector.SupplierID);
+      if (foundElement.Name != element.Name) {
+        foundElements.push(foundElement);
+        debug("Added element: '" + foundElement.Name + "'");
+        currentFoundElements = findAllRelatedElements(eaRepository, foundElement, maxDepth, currentDepth)
+        if (currentFoundElements) {
+          foundElements = foundElements.concat(currentFoundElements);
+        }
+      }
+      i += 1;
+    }
+  }
+  return foundElements;
+}
 
 _main();

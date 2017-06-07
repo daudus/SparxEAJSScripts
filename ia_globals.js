@@ -20,25 +20,45 @@ function Config() {
 
 // global context
 // config:configuration
-// eaRepository: sparxEA current repository
+// repository: sparxEA current repository
 // eaElement: sparxEA selected element
 // eaPackage: sparxEA package of selected element
-function Context(config, eaRepository,eaPackage,eaElement) {
-  this.config = config;
-  this.eaRepository = eaRepository;
-  this.eaPackage = eaPackage;
-  this.eaElement = eaElement;
+function Context(config, repository, pckg, element) {
+  var config = config;
+  var repository = repository;
+  var pckg = pckg;
+  var element = element;
+
+  this.getRepository = function () { return repository;};
+  this.getPackage = function () { return pckg;};
+  this.getElement = function () { return element;};
 }
 
 
 // object definition for wrapper of Sparx EA Element
-// eaElement: reference to original EA Element
-// name: name of EA Element
-// stereoType: stereotype of EA Element
+// element: reference to original EA Element
+function Package(pckg) {
+  this.package = pckg;
+  this.name = this.package.Name;
+}
+
+
+// object definition for wrapper of Sparx EA Element
+// element: reference to original EA Element
 // fullName: function returns string "[streotype]:name"
-function EaElement(eaElement,name, stereoType) {
-  this.eaElement = eaElement;
-  this.name = name;
-  this.stereoType = stereoType;
-  this.fullName = function() {return "[" + this.stereoType+"]:" + this.name;};
+function Element(element) {
+  var element = element;
+
+  this.getName = function () { element.Name;};
+  this.getStereotype = function () { element.Stereotype;};
+  this.getFullName = function () {
+    return "[" + element.Stereotype + "]:" + element.Name;
+  };
+
+  // relationships  
+  this.getAllRelatedElements = function (depth) {
+    relatedElements = [];
+    relatedElements = findAllRelatedElements(repository, element, depth, 0);
+    return relatedElements;
+  }
 }
