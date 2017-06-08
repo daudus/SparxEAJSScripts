@@ -160,11 +160,13 @@ function xlog(v, label) {
 function findAllRelatedElements(eaRepository, element, maxDepth, currentDepth) {
   var connectors, currentConnector, currentFoundElements, foundElement, foundElements, i;
   debug("Finding related elements for: '" + element.Name + "'. Current depth =" + currentDepth);
+
   if (currentDepth >= maxDepth) {
     return;
   } else {
     currentDepth++;
   }
+  
   connectors = element.Connectors;
   foundElements = [];
   if (connectors) {
