@@ -198,10 +198,8 @@ function findAllRelatedElements(eaRepository, element, maxDepth, foundElements, 
 
 
 function findAllRelatedElements_add(eaRepository, element, foundElement, foundElements, maxDepth, currentDepth) {
-  debug(!isElementInArray(foundElement, foundElements));
   if (!isElementInArray(foundElement, foundElements)) {
-    debug(foundElements.length + ":" + foundElements.indexOf(foundElement));
-    if (!isElementInArray(foundElement, foundElements)) foundElements.push(foundElement);
+    foundElements.push(foundElement);
     debug("Added element: '" + foundElement.Name + "'");
     foundElements = findAllRelatedElements(eaRepository, foundElement, maxDepth, foundElements, currentDepth);
   }
@@ -212,7 +210,7 @@ function findAllRelatedElements_add(eaRepository, element, foundElement, foundEl
 function isElementInArray(element, elements) {
   for (i = 0; i < elements.length; i += 1) {
     currentElement = elements[i];
-    if (element.ElementGUID === currentElement.ElementGUID) {
+    if (element.ElementID === currentElement.ElementID) {
       return true;
     }
   }
