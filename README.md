@@ -7,3 +7,12 @@
 - Development tool: [Microsoft Visual Studio Code](https://code.visualstudio.com/download)
 - Development Runtime: [Microsoft CScript](https://technet.microsoft.com/en-us/library/bb490887.aspx)
 - [Bacic conceptual Architecture](https://www.flickr.com/photos/daudus/shares/9174Gn)
+
+
+#Usage
+- open EA model with writable package P
+- Install all scripts into HuMaInn package within Sparx EA
+- select element E within package P
+- run script ia
+- within package P there will be new diagram created with name "iagen_"+P
+- all elements from package P together with relations will be in diagram
