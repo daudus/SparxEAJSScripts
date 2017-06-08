@@ -14,7 +14,7 @@
 //MAXIMUM_DEPTH: limit for Breadth-first traversal
 //DIAGRAM_PREFIX: diagram will be created with this name: DIAGRAM_PREFIX+<name of selected package>
 function Config() {
-  this.MAXIMUM_DEPTH = 10;
+  this.MAXIMUM_DEPTH = 2;
   this.DIAGRAM_PREFIX = "iagen_";
 }
 
@@ -29,6 +29,7 @@ function Context(config, repository, pckg, element) {
   var pckg = pckg;
   var element = element;
 
+  this.getConfig = function () { return config;};
   this.getRepository = function () { return repository;};
   this.getPackage = function () { return pckg;};
   this.getElement = function () { return element;};

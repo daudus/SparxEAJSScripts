@@ -34,7 +34,7 @@ function setup() {
 
 //-----------------------------------------------------------------------------
 function testGraph() {
-  var elements = context.getElement().getAllRelatedElements(10);
+  var elements = context.getElement().getAllRelatedElements(context.getConfig().MAXIMUM_DEPTH);
   for (i = 0; i < elements.length; i += 1) {
     element = elements[i];
     log("Found element " + i + ": '" + element.Name + "'");
