@@ -11,8 +11,19 @@
 var DEBUG = false;
 var ENV_SPARX = false;
 
-function _ea_utils()
-{
+//-- Language patches -------------
+if (typeof (Array.prototype.indexOf) === 'undefined') {
+  Array.prototype.indexOf = function (item, start) {
+    var length = this.length;
+    start = typeof (start) !== 'undefined' ? start : 0;
+    for (var i = start; i < length; i++) {
+      if (this[i] === item) return i;
+    }
+    return -1;
+  }
+}
+
+function _ea_utils() {
   info("ea_utils initialization started");
   if (typeof WScript === 'object') {
     ENV_SPARX = false;
@@ -157,36 +168,56 @@ function xlog(v, label) {
   return label + ':\n' + lg(v);
 };
 
-function findAllRelatedElements(eaRepository, element, maxDepth, currentDepth) {
-  var connectors, currentConnector, currentFoundElements, foundElement, foundElements, i;
+
+function findAllRelatedElements(eaRepository, element, maxDepth, foundElements, currentDepth) {
+  var connectors, currentConnector, foundElement, i;
   debug("Finding related elements for: '" + element.Name + "'. Current depth =" + currentDepth);
 
-  if (currentDepth >= maxDepth) {
-    return;
+  if (!currentDepth) {
+    currentDepth = 1;
+  } else if (currentDepth >= maxDepth) {
+    return foundElements;
   } else {
-    currentDepth++;
+    currentDepth = currentDepth + 1;
   }
-  
+
   connectors = element.Connectors;
-  foundElements = [];
+  if (!foundElements) foundElements = [];
   if (connectors) {
     debug("Number of connectors=" + connectors.Count)
     i = 0;
     while (i < connectors.Count) {
       currentConnector = connectors.GetAt(i);
-      foundElement = eaRepository.GetElementByID(currentConnector.SupplierID);
-      if (foundElement.Name != element.Name) {
-        foundElements.push(foundElement);
-        debug("Added element: '" + foundElement.Name + "'");
-        currentFoundElements = findAllRelatedElements(eaRepository, foundElement, maxDepth, currentDepth)
-        if (currentFoundElements) {
-          foundElements = foundElements.concat(currentFoundElements);
-        }
-      }
+      foundElements = findAllRelatedElements_add(eaRepository, element, eaRepository.GetElementByID(currentConnector.SupplierID), foundElements, maxDepth, currentDepth);
+      foundElements = findAllRelatedElements_add(eaRepository, element, eaRepository.GetElementByID(currentConnector.ClientId), foundElements, maxDepth, currentDepth);
       i += 1;
     }
   }
   return foundElements;
 }
+
+
+function findAllRelatedElements_add(eaRepository, element, foundElement, foundElements, maxDepth, currentDepth) {
+  debug(!isElementInArray(foundElement, foundElements));
+  if (!isElementInArray(foundElement, foundElements)) {
+    debug(foundElements.length + ":" + foundElements.indexOf(foundElement));
+    if (!isElementInArray(foundElement, foundElements)) foundElements.push(foundElement);
+    debug("Added element: '" + foundElement.Name + "'");
+    foundElements = findAllRelatedElements(eaRepository, foundElement, maxDepth, foundElements, currentDepth);
+  }
+  return foundElements;
+}
+
+
+function isElementInArray(element, elements) {
+  for (i = 0; i < elements.length; i += 1) {
+    currentElement = elements[i];
+    if (element.ElementGUID === currentElement.ElementGUID) {
+      return true;
+    }
+  }
+  return false;
+}
+
 
 _ea_utils();

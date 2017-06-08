@@ -58,7 +58,7 @@ function Element(element) {
 
   // relationships  
   this.getAllRelatedElements = function () {
-    var relatedElements = findAllRelatedElements(context.getRepository(), element, context.getConfig().MAXIMUM_DEPTH, 0);
+    var relatedElements = findAllRelatedElements(context.getRepository(), element, context.getConfig().MAXIMUM_DEPTH);
     return relatedElements;
   }
 }

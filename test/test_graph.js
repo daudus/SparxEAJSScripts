@@ -52,7 +52,7 @@ var start = new Date();
 var result;
 
 setup();
-info("Invoking script on selected element '" + context.getElement().getFullName() + "' in package '" + context.getPackage().name) + "'";
+info("Invoking script on selected element '" + context.getElement().getFullName() + "' in package '" + context.getPackage().name + "'");
 result = testGraph();
 //-- END ----------------------------------------------------------------------
 
