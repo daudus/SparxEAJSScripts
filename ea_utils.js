@@ -11,12 +11,8 @@
 var DEBUG = false;
 var ENV_SPARX = false;
 
-<<<<<<< HEAD
-function _main() {
-=======
 function _ea_utils()
 {
->>>>>>> diagram
   info("ea_utils initialization started");
   if (typeof WScript === 'object') {
     ENV_SPARX = false;
@@ -161,8 +157,6 @@ function xlog(v, label) {
   return label + ':\n' + lg(v);
 };
 
-<<<<<<< HEAD
-
 function findAllRelatedElements(eaRepository, element, maxDepth, currentDepth) {
   var connectors, currentConnector, currentFoundElements, foundElement, foundElements, i;
   debug("Finding related elements for: '" + element.Name + "'. Current depth =" + currentDepth);
@@ -193,7 +187,4 @@ function findAllRelatedElements(eaRepository, element, maxDepth, currentDepth) {
   return foundElements;
 }
 
-_main();
-=======
 _ea_utils();
->>>>>>> diagram
