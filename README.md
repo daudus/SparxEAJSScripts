@@ -21,11 +21,11 @@
 
 ## Structure of scripts
 `*---HuMaInn`
-`    |   diagram.js`
-`    |   ea_utils.js`
-`    |   ia.js`
-`    |   ia_globals.js`
-`    |   `
+`    I   diagram.js`
+`    I   ea_utils.js`
+`    I   ia.js`
+`    I   ia_globals.js`
+`    I   `
 `    \---test`
 `            test_diagram.js`
 `            test_env.js`
