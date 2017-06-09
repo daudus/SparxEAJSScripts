@@ -82,12 +82,12 @@ function getImpactedElements(context, impactedElements) {
   info("getImpactedElements started")
   var eaElement = null;
   //dummy implementation
-  debug("number of elements: " + context.eaPackage.elements.Count)
-  for (index = 0; index < context.eaPackage.elements.Count; ++index) {
-      eaElement = context.eaPackage.elements.GetAt(index);
-      var element = new EaElement(eaElement,eaElement.Name,eaElement.Stereotype);
+  debug("number of elements: " + context.getPackage().elements.Count)
+  for (index = 0; index < context.getPackage().elements.Count; ++index) {
+      eaElement = context.getPackage().elements.GetAt(index);
+      var element = new Element(eaElement,eaElement.Name,eaElement.Stereotype);
       impactedElements.push(element);
-      debug("ADDED ELEMENT: " +element.fullName());
+      debug("ADDED ELEMENT: " +element.getFullName());
   };
   //end dummy implementation
   info(impactedElements.length + " impacted elements were added");

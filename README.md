@@ -9,10 +9,27 @@
 - [Bacic conceptual Architecture](https://www.flickr.com/photos/daudus/shares/9174Gn)
 
 
-# Usage
-- open EA model with writable package P
-- Install all scripts into HuMaInn package within Sparx EA
-- select element E within package P
+## Purpose
+
+## Usage
+- open EA model with some writable package P
+- Install all scripts into HuMaInn package within Sparx EA (create this package if necessary. See bellow the structure of scripts)
+- select some element E within package P
 - run script ia
 - within package P there will be new diagram created with name "iagen_"+P
-- all elements from package P together with relations will be in diagram
+- all elements from package P together with relations will be in diagram (based on parameter MAXIMUM_DEPTH)
+
+## Structure of scripts
+\---HuMaInn
+    |   diagram.js
+    |   ea_utils.js
+    |   ia.js
+    |   ia_globals.js
+    |   
+    \---test
+            test_diagram.js
+            test_env.js
+            test_graph.js
+
+ia.js is the main runnable script.
+directory test contains "unit tests" like scripts

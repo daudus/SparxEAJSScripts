@@ -21,7 +21,7 @@ function addDiagram(context, elements) {
   var eaDiagramObject = null;
   var eaElement = null;
   var diagramLayout = 0; //long
-  var diagramName = context.config.DIAGRAM_PREFIX + context.eaPackage.Name;
+  var diagramName = context.getConfig().DIAGRAM_PREFIX + context.getPackage().Name;
   var projectInterface = null;
 
   // ConstLayoutStyles http://www.sparxsystems.com/enterprise_architect_user_guide/9.3/automation/constlayoutstylesenum.html
@@ -43,11 +43,9 @@ function addDiagram(context, elements) {
   diagramLayout = diagramLayout + lsInitializeDFSOut;
   diagramLayout = diagramLayout + lsLayoutDirectionUp;
 
-  debug("#diagrams: " + context.eaPackage.Diagrams.Count);
-  projectInterface = context.eaRepository.GetProjectInterface();
-  debug(xlog(projectInterface,"projectInterface"));
-  eaDiagram = context.eaPackage.Diagrams.AddNew(diagramName, "Logical");
-  debug(xlog(eaDiagram,"diagram"));
+  debug("#diagrams: " + context.getPackage().Diagrams.Count);
+  projectInterface = context.getRepository().GetProjectInterface();
+  eaDiagram = context.getPackage().Diagrams.AddNew(diagramName, "Logical");
   if (!eaDiagram.Update()) {
     error(eaDiagram.GetLastError);
   }
@@ -55,16 +53,16 @@ function addDiagram(context, elements) {
   eaDiagram.Update();
   debug("Adding elements into the diagram");
   for (index = 0; index < elements.length; ++index) {
-    eaElement = elements[index].eaElement;
+    eaElement = elements[index].getElement();
     eaDiagramObject = eaDiagram.DiagramObjects.AddNew("", "");
     eaDiagramObject.ElementID = eaElement.ElementID;
     eaDiagramObject.Update();
   };
   debug("Adding elements into the diagram finished")
-  //TODO: projectInterface.LayoutDiagramEx(eaDiagram.DiagramGUID, diagramLayout, 4, 20, 20, True);
+  projectInterface.LayoutDiagramEx(eaDiagram.DiagramGUID, diagramLayout, 4, 20, 20, true);
   eaDiagram.Update();
   eaDiagram.DiagramObjects.Refresh();
-  context.eaRepository.ReloadDiagram(eaDiagram.DiagramID);
+  context.getRepository().ReloadDiagram(eaDiagram.DiagramID);
   info("Create Diagram: " + diagramName + " is finished");
 
   return eaDiagram;

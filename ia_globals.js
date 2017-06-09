@@ -46,10 +46,14 @@ function Package(pckg) {
 
 // object definition for wrapper of Sparx EA Element
 // element: reference to original EA Element
-// fullName: function returns string "[streotype]:name"
-function Element(element) {
-  var element = element;
+// name: Name of original Sparx EA Element
+// stereotype: Stereotype of original Sparx EA Element
+// getFullName: returns string "[streotype]:name"
+// getAllRelatedElements: returns all related elemnts based on MAXIMUM_DEPTH depth
+function Element(pelement) {
+  var element = pelement;
 
+  this.getElement = function () { return element;};
   this.getName = function () { element.Name;};
   this.getStereotype = function () { element.Stereotype;};
   this.getFullName = function () {
