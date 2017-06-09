@@ -9,7 +9,7 @@
 - [Bacic conceptual Architecture](https://www.flickr.com/photos/daudus/shares/9174Gn)
 
 
-#Usage
+# Usage
 - open EA model with writable package P
 - Install all scripts into HuMaInn package within Sparx EA
 - select element E within package P

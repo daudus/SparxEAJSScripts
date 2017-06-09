@@ -2,8 +2,22 @@
     // See https://go.microsoft.com/fwlink/?LinkId=733558
     // for the documentation about the tasks.json format
     "version": "0.1.0",
-    "command": "cscript",
-    "isShellCommand": true,
-    "args": ["${file}"],
-    "showOutput": "always"
+    "tasks": [
+      {
+        "taskName": "C-Script",
+        "command": "cscript",
+        "isShellCommand": true,
+        "args": ["${file}"],
+        "showOutput": "always",
+        "echoCommand": true 
+      },
+      {
+        "taskName": "JavaScript",
+        "command": "js",
+        "isShellCommand": true,
+        "args": ["${file}"],
+        "showOutput": "always",
+        "echoCommand": true 
+      }
+    ]
 }
