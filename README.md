@@ -20,15 +20,18 @@
 - all elements from package P together with relations will be in diagram (based on parameter MAXIMUM_DEPTH)
 
 ## Structure of scripts
-- `\---HuMaInn`
-- ------------diagram.js
-- ------------ea_utils.js
-- ------------ia.js :+1:
-- ------------ia_globals.js
-- -----------`\---test`
-- ------------------------test_diagram.js
-- ------------------------test_env.js
-- ------------------------test_graph.js
+
+```
+`\---HuMaInn`
+           diagram.js
+           ea_utils.js
+           ia.js :+1:
+           ia_globals.js
+           `\---test`
+                      test_diagram.js
+                      test_env.js
+                      test_graph.js
+```
 
 - ia.js is the main runnable script.
 - directory test contains "unit tests" like scripts
