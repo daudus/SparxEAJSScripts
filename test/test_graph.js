@@ -24,17 +24,17 @@ var context = null;
 
 //-----------------------------------------------------------------------------
 function setup() {
-  repository = GetObject("", "EA.App").repository;
-  selectedElement = repository.GetTreeSelectedObject();
-  element = new Element(selectedElement);
-  pckg = new Package(repository.GetPackageByID(selectedElement.PackageID));
+  var repository = GetObject("", "EA.App").repository;
+  var selectedElement = repository.GetTreeSelectedObject();
+  var element = new Element(selectedElement);
+  var pckg = new Package(repository.GetPackageByID(selectedElement.PackageID));
   context = new Context(new Config(), repository, pckg, element);
 }
 
 
 //-----------------------------------------------------------------------------
 function testGraph() {
-  var elements = context.getElement().getAllRelatedElements(context.getConfig().MAXIMUM_DEPTH);
+  var elements = context.getElement().getAllRelatedElements();
   for (i = 0; i < elements.length; i += 1) {
     element = elements[i];
     log("Found element " + i + ": '" + element.Name + "'");
@@ -52,7 +52,7 @@ var start = new Date();
 var result;
 
 setup();
-info("Invoking script on selected element '" + context.getElement().getFullName() + "' in package '" + context.getPackage().name) + "'";
+info("Invoking script on selected element '" + context.getElement().getFullName() + "' in package '" + context.getPackage().name + "'");
 result = testGraph();
 //-- END ----------------------------------------------------------------------
 
