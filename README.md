@@ -23,7 +23,6 @@
 
 ```
 `\---HuMaInn`
-           diagram.js
            ea_utils.js
            ia.js :+1:
            ia_globals.js
