@@ -9,6 +9,7 @@ DEBUG = true;
 var ActiveXObject, GetObject;
 var fso = new ActiveXObject("Scripting.FileSystemObject");
  eval(fso.OpenTextFile(fso.getFolder(".")  + "\\ea_utils.js", 1).ReadAll());
+//*/
 //EMBEDED SPARX EA ENVIRONMENT
 /*
 !INC HuMaInn.ea_utils
