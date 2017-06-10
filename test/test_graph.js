@@ -10,12 +10,19 @@
 /*jslint node: true */
 "use strict";
 
-//!INC *.*
+//!INC .......
+//NEEDS TO BE COMMENTED MANUALLY
+//STANDALONE ENVIRONMENT
+///*
 var ActiveXObject, GetObject;
 var fso = new ActiveXObject("Scripting.FileSystemObject");
 eval(fso.OpenTextFile(fso.getFolder(".") + "\\ea_utils.js", 1).ReadAll());
 eval(fso.OpenTextFile(fso.getFolder(".") + "\\ia_globals.js", 1).ReadAll());
-
+//EMBEDED SPARX EA ENVIRONMENT
+/*
+!INC HuMaInn.ea_utils
+!INC HuMaInn.ia_globals
+*/
 
 //global vars
 DEBUG = true;
@@ -37,7 +44,7 @@ function testGraph() {
   var elements = context.getElement().getAllRelatedElements();
   for (i = 0; i < elements.length; i += 1) {
     element = elements[i];
-    log("Found element " + i + ": '" + element.Name + "'");
+    info("Found element " + i + ": '" + element.Name + "'");
   }
   return "SUCCESS";
 }
